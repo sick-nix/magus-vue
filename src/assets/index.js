@@ -1,8 +1,7 @@
 import css from 'assets/style/main.css'
-import notyfStyles from 'notyf/notyf.min.css'
-import 'line-awesome/dist/line-awesome/css/line-awesome.min.css'
+import brand from 'assets/images/brand.png'
 
 export default {
     css,
-    notyfStyles,
+    brand
 }

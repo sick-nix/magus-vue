@@ -1,23 +1,28 @@
 <template>
-  <div>
-    <formulate-form
-        :schema="loginSchema"
-        v-model="formValues"
-    >
-      <formulate-input
-          type="button"
-          @click="login"
-      />
-    </formulate-form>
-    <router-link to="/register">Register</router-link>
+  <div class="login-view">
+    <custom-header/>
+    <form-wrapper :text-props="formWrapperTextProps" link-to="/register">
+      <formulate-form
+          :schema="loginSchema"
+          v-model="formValues"
+      >
+        <formulate-input
+            type="button"
+            @click="login"
+        />
+      </formulate-form>
+    </form-wrapper>
   </div>
 </template>
 
 <script>
-import getLoginSchema from "components/Form/Schema/login";
+import getLoginSchema from "components/Form/Schema/login"
+import CustomHeader from "components/Header"
+import FormWrapper from "components/Form/Wrapper"
 
 export default {
   name: "Login",
+  components: {FormWrapper, CustomHeader},
   data() {
     return {
       formValues: {},
@@ -25,20 +30,25 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('checkAuth')
-
     this.loginSchema = getLoginSchema()
+  },
+  computed: {
+    formWrapperTextProps() {
+      return {
+        headerText: 'Sign in to Magus',
+        calloutMessage: ' New to Magus? ',
+        calloutLink: 'Create an account'
+      }
+    }
   },
   methods: {
     async login() {
       const user = await this.$store.dispatch('login', this.formValues)
-      if(user && user.id)
-        await this.$router.push('/chat')
+      if(user && user._id) await this.$router.push({ name: 'chat' })
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

@@ -1,7 +1,7 @@
 export default function (params = {}) {
     return [
         {
-            type: 'text',
+            type: 'email',
             name: 'email',
             label: 'Enter your email',
         },

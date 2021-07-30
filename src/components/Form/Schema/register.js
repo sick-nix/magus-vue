@@ -1,22 +1,22 @@
 export default function (params = {}) {
     return [
         {
-            type: 'text',
+            type: 'email',
             name: 'email',
             label: 'Enter your email',
-            validation: 'required|email|available',
+            validation: 'bail|required|email|available',
             validationRules: {
                 available: params.available
             },
             validationMessages: {
-                available: 'Username is already taken'
-            }
+                available: 'Email is already taken'
+            },
         },
         {
-            type: 'text',
+            type: 'email',
             name: 'emailConfirm',
             label: 'Confirm your email',
-            validation: '^required|email|confirm:email',
+            validation: 'bail|required|email|confirm:email',
             validationName: 'Email confirmation'
         },
         {
@@ -29,14 +29,14 @@ export default function (params = {}) {
             type: 'password',
             name: 'passwordConfirm',
             label: 'Confirm your password',
-            validation: '^required|confirm:password',
+            validation: 'bail|required|confirm:password',
             validationName: 'Password confirmation'
         },
         {
             type: 'text',
             name: 'username',
             label: 'Enter your username',
-            validation: 'required|matches:/[a-zA-Z0-9_]+/|available',
+            validation: 'bail|required|matches:/[a-zA-Z0-9_]+/|available',
             validationRules: {
                 available: params.available,
             },

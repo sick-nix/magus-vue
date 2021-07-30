@@ -19,8 +19,8 @@ const actions = {
         return authApi.register(params)
     },
     login: (store, params) => {
-        return authApi.login(params).json(user => {
-            if(user && user.id) store.dispatch('setUser', user)
+        return authApi.login(params).json(async user => {
+            if(user && user._id) await store.dispatch('setUser', user)
             return user
         })
     },

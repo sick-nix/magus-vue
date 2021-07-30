@@ -1,24 +1,30 @@
 <template>
-  <div>
-    <formulate-form
-      #default="{ hasErrors }"
-      :schema="registerSchema"
-      v-model="formValues"
-    >
-      <formulate-input
-        type="button"
-        :disabled="hasErrors"
-        @click="register"
-      />
-    </formulate-form>
+  <div class="register-view">
+    <custom-header/>
+    <form-wrapper :text-props="formWrapperTextProps">
+      <formulate-form
+          #default="{ hasErrors }"
+          :schema="registerSchema"
+          v-model="formValues"
+      >
+        <formulate-input
+            type="button"
+            :disabled="hasErrors"
+            @click="register"
+        />
+      </formulate-form>
+    </form-wrapper>
   </div>
 </template>
 
 <script>
-import getRegisterSchema from "components/Form/Schema/register";
+import getRegisterSchema from "components/Form/Schema/register"
+import CustomHeader from "components/Header"
+import FormWrapper from "components/Form/Wrapper"
 
 export default {
   name: "Register",
+  components: {CustomHeader, FormWrapper},
   data() {
     return {
       formValues: {},
@@ -34,14 +40,26 @@ export default {
       }
     })
   },
+  computed: {
+    formWrapperTextProps() {
+      return {
+        headerText: 'Sign up to Magus',
+        calloutMessage: ' Already have an account? ',
+        calloutLink: 'Sign In'
+      }
+    }
+  },
   methods: {
-    register() {
-      this.$store.dispatch('register', this.formValues)
+    async register() {
+      const request = await this.$store.dispatch('register', this.formValues)
+      request.json(async json => {
+        if(json && json.success)
+          await this.$router.push('/login')
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

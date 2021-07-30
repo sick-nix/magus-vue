@@ -30,7 +30,7 @@ module.exports = {
             // to add all the styles inside the <style> block in `.vue` file.
             {
                 test: /\.css$/,
-                use: ["vue-style-loader", "css-loader", "postcss-loader"]
+                use: ["vue-style-loader", "css-loader"]
             },
             {
                 test: /\.png|\.woff2|\.woff|\.ttf|\.svg|\.eot$/,
