@@ -6,8 +6,10 @@ import {renderToasts} from "util/error"
 export const externalApi = wretch()
     .url(Magus.instance.getConfigOption(CONFIG_OPTIONS.BASE_URL))
     .options({
-        credentials: "same-origin",
-        mode: "cors"
+        // @todo restore
+        /*credentials: "same-origin",
+        mode: "cors"*/
+        credentials: 'include'
     })
     .catcher('Error', err => {
         if(err?.message) {

@@ -1,16 +1,14 @@
 <template>
-  <div class="login__container">
-    <div class="form__container">
-      <div class="form__header">
-        <h1 class="header__text">{{ textProps.headerText }}</h1>
-      </div>
-      <div class="form__body">
-        <slot/>
-      </div>
-      <div class="form-callout">
-        {{ textProps.calloutMessage }}
-        <router-link :to="linkTo">{{ textProps.calloutLink }}</router-link>
-      </div>
+  <div class="form__container">
+    <div class="form__header">
+      <h1 class="header__text">{{ textProps.headerText }}</h1>
+    </div>
+    <div class="form__body" :class="formClass">
+      <slot/>
+    </div>
+    <div v-if="textProps.calloutMessage" class="form-callout">
+      {{ textProps.calloutMessage }}
+      <router-link v-if="textProps.calloutLink" :to="linkTo">{{ textProps.calloutLink }}</router-link>
     </div>
   </div>
 </template>
@@ -30,6 +28,10 @@ export default {
     linkTo: {
       type: String,
       default: '/login'
+    },
+    formClass: {
+      type: Object,
+      default: () => ({})
     }
   }
 }
@@ -45,7 +47,7 @@ export default {
 .form__header {
   background-color: transparent;
   border: 0;
-  color: var(--text-color-primary);
+  color: var(--color-text-primary);
   margin: 0 0 15px;
   text-align: center;
   text-shadow: none;

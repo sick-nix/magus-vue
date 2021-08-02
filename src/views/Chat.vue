@@ -1,10 +1,15 @@
 <template>
-  <div>test</div>
+  <chat-container></chat-container>
 </template>
 
 <script>
+import ChatContainer from "components/Chat/Container"
 export default {
-  name: "Chat"
+  name: "Chat",
+  components: {ChatContainer},
+  mounted() {
+    this.$store.dispatch('createConnection')
+  }
 }
 </script>
 

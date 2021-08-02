@@ -16,6 +16,13 @@ const actions = {
             .json(json => ({ available: result } = json))
         return result
     },
+    getUsers(store, params) {
+        const { search, excludeCurrentUser } = params
+        return userApi.getUsers({
+            username: search,
+            excludeCurrentUser: Number(excludeCurrentUser)
+        })
+    },
     setUser: (store, user) => {
         store.commit('setUser', user)
     }

@@ -43,6 +43,7 @@ module.exports = {
         port: 3000,
         publicPath: "/dist/"
     },
+    devtool: 'eval-cheap-module-source-map',
     resolve: {
         alias: {
             api: getPath("src/api"),
@@ -54,8 +55,9 @@ module.exports = {
             store: getPath("src/store"),
             util: getPath("src/util"),
             views: getPath("src/views"),
-            ws: getPath("src/ws"),
-            src: getPath("src")
+            websocket: getPath("src/websocket"),
+            src: getPath("src"),
+            libs: getPath("libs")
         },
         extensions: [ '*', '.vue', '.js' ]
     },

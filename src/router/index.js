@@ -16,9 +16,13 @@ const router = new VueRouter({
     ]
 })
 
-router.beforeEach((to, from, next) => {
-    if(to.name === 'login' && from.name !== 'register')
-        next(async vm => await vm.$store.dispatch('checkAuth'))
+router.beforeEach(async (to, from, next) => {
+    if(to.name === 'login' && from.name !== 'register') {
+        await store.dispatch('checkAuth')
+        if(store.getters.user && store.getters.user._id)
+            next({name: 'chat'})
+        next()
+    }
     else if(protectedRoutes.includes(to.name) && !store.getters.user)
         next({name: 'login'})
     else {

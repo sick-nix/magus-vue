@@ -1,15 +1,15 @@
 <template>
   <div class="login-view">
     <custom-header/>
-    <form-wrapper :text-props="formWrapperTextProps" link-to="/register">
+    <form-wrapper
+        :text-props="formWrapperTextProps"
+        link-to="/register"
+        :form-class="{ 'auth-form': true }"
+    >
       <formulate-form
           :schema="loginSchema"
           v-model="formValues"
       >
-        <formulate-input
-            type="button"
-            @click="login"
-        />
       </formulate-form>
     </form-wrapper>
   </div>
@@ -30,7 +30,9 @@ export default {
     }
   },
   mounted() {
-    this.loginSchema = getLoginSchema()
+    this.loginSchema = getLoginSchema({
+      login: this.login
+    })
   },
   computed: {
     formWrapperTextProps() {

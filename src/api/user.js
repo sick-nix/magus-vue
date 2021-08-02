@@ -7,4 +7,10 @@ export default {
             .query(params)
             .get()
     },
+    getUsers(params) {
+        return externalApi
+            .url('/user/users')
+            .query(params)
+            .get()
+    }
 }

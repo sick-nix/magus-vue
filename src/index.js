@@ -6,10 +6,15 @@ import RouterLink from 'vue-router'
 import RouterView from 'vue-router'
 import Magus from "src/Magus"
 import VueFormulate from '@braid/vue-formulate'
+import FormulateVSelectPlugin from 'libs/vue-formulate/vue-select/main'
+import VModal from 'vue-js-modal'
+import VueSelect from "vue-select"
 import assets from 'assets'
 
-Object.defineProperty(Vue.prototype, '$assets', assets)
+Magus.instance.setConfig(window.MAGUS_CONFIG || {})
+Magus.setStore(store)
 
+Vue.prototype.$assets = assets
 Vue.config.productionTip = false
 
 Vue.use(RouterView)
@@ -17,7 +22,7 @@ Vue.use(RouterLink)
 Vue.use(VueFormulate, {
   classes: {
     label: 'form-label',
-    wrapper: 'mb-2',
+    wrapper: '',
     input(context) {
       const classList = []
       if(context.hasErrors)
@@ -25,17 +30,21 @@ Vue.use(VueFormulate, {
       else if(context.hasValue && context.validation)
         classList.push('border-success')
       switch (context.classification) {
-        case 'button': classList.push('btn', 'btn-primary'); break
-        case 'text': classList.push('input', 'form-control'); break
+        case 'button':
+          classList.push('btn', 'btn-primary', 'btn-block')
+          break
+        case 'text':
+          classList.push('input', 'form-control', 'input-block')
+          break
       }
       return classList
     },
-    error: ['text-danger', 'small', 'list-unstyled']
-  }
+    error: ['f6']
+  },
+  plugins: [ FormulateVSelectPlugin ]
 })
-
-Magus.instance.setConfig(window.MAGUS_CONFIG || {})
-Magus.setStore(store)
+Vue.use(VModal)
+Vue.component(VueSelect)
 
 new Vue({
   store,

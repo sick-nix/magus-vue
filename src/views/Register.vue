@@ -1,7 +1,10 @@
 <template>
   <div class="register-view">
     <custom-header/>
-    <form-wrapper :text-props="formWrapperTextProps">
+    <form-wrapper
+        :text-props="formWrapperTextProps"
+        :form-class="{ 'auth-form': true }"
+    >
       <formulate-form
           #default="{ hasErrors }"
           :schema="registerSchema"

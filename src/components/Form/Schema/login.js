@@ -9,6 +9,10 @@ export default function (params = {}) {
             type: 'password',
             name: 'password',
             label: 'Enter your password',
+        },
+        {
+            type: 'button',
+            '@click': params.login
         }
     ]
 }

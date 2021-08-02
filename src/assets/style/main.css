@@ -1,67 +1,16 @@
 @import "~line-awesome/dist/line-awesome/css/line-awesome.min.css";
 @import "~notyf/notyf.min.css";
-
-:root {
-    --background-color-primary: #0d1117;
-    --text-color-primary: #c9d1d9;
-    --color-border-secondary: #21262d;
-    --color-bg-tertiary: #161b22;
-    --color-border-tertiary: #6e7681;
-    --color-state-focus-border: #388bfd;
-    --color-state-focus-shadow: 0 0 0 3px #0c2d6b;
-    --color-btn-primary-bg: #238636;
-    --color-btn-primary-border: #2ea043;
-    --color-btn-primary-shadow: 0 0 transparent;
-    --color-btn-primary-inset-shadow: 0 0 transparent;
-    --color-btn-primary-text: #fff;
-    --color-btn-primary-hover-border: #3fb950;
-    --color-btn-primary-hover-bg: #2ea043;
-    --color-btn-primary-focus-bg: #238636;
-    --color-btn-primary-focus-border: #3fb950;
-    --color-btn-primary-focus-shadow: 0 0 0 3px rgba(46, 164, 79, 0.4);
-    --color-text-link: #58a6ff;
-    --color-btn-danger-bg: #f85149;
-    --color-btn-danger-text: #fff;
-    --color-btn-danger-hover-bg: #da3633;
-    --color-btn-danger-hover-border: #f85149;
-    --color-btn-danger-hover-shadow: 0 0 transparent;
-    --color-btn-danger-hover-inset-shadow: 0 0 transparent;
-    --color-btn-danger-hover-counter-bg: rgba(255,255,255,0.2);
-    --color-btn-danger-selected-text: #fff;
-    --color-btn-danger-selected-bg: #b62324;
-    --color-btn-danger-selected-border: rgba(240,246,252,0.1);
-    --color-btn-danger-selected-shadow: 0 0 transparent;
-    --color-btn-danger-disabled-text: rgba(248,81,73,0.5);
-    --color-btn-danger-disabled-bg: #0d1117;
-    --color-btn-danger-disabled-counter-bg: rgba(218,54,51,0.05);
-    --color-btn-danger-focus-border: #f85149;
-    --color-btn-danger-focus-shadow: 0 0 0 3px rgba(182,35,36,0.4);
-    --color-btn-danger-counter-bg: rgba(218,54,51,0.1);
-    --color-btn-danger-icon: #f85149;
-    --color-btn-danger-hover-icon: #f0f6fc;
-}
+@import "~vue-select/dist/vue-select.css";
+@import "~@primer/css/dist/primer.css";
 
 *, *:before, *:after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-html {
-    font-size: 14px;
-}
 body {
-    min-width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-    background-color: var(--background-color-primary);
-    color: var(--text-color-primary);
-}
-.main-app {
-    width: 100vw;
     height: 100vh;
+    width: 100vw;
 }
 
 .pointer {
@@ -90,71 +39,9 @@ label {
     margin-bottom: 7px;
     text-align: left;
 }
-input[type="text"], input[type="password"], input[type="email"] {
-    margin: 5px 0 15px;
-    display: block;
-    width: 100%;
-    background-color: var(--background-color-primary);
-    background-position: right 8px center;
-    background-repeat: no-repeat;
-    border: 1px solid var(--color-border-secondary);
-    border-radius: 6px;
-    box-shadow: 0 0 transparent;
-    color: var(--text-color-primary);
-    line-height: 20px;
-    outline: none;
-    padding: 5px 12px;
-    vertical-align: middle;
-    font-family: inherit;
-}
-input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
-    border-color: var(--color-state-focus-border);
-    box-shadow: var(--color-state-focus-shadow);
-    outline: none;
-}
-button, input[type="button"], input[type="submit"] {
-    margin-top: 20px;
-    text-align: center;
-    width: 100%;
-    display: block;
-
-    appearance: none;
-    border: 1px solid;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    line-height: 20px;
-    padding: 5px 16px;
-    position: relative;
-    user-select: none;
-    vertical-align: middle;
-    white-space: nowrap;
-    font-family: inherit;
-    overflow: visible;
-}
-.btn-primary {
-    background-color: var(--color-btn-primary-bg);
-    border-color: var(--color-btn-primary-border);
-    box-shadow: var(--color-btn-primary-shadow), var(--color-btn-primary-inset-shadow);
-    color: var(--color-btn-primary-text);
-}
-.btn-primary:hover {
-    text-decoration: none;
-    background-color: var(--color-btn-primary-hover-bg);
-    border-color: var(--color-btn-primary-hover-border);
-}
-.btn-primary:focus {
-    background-color: var(--color-btn-primary-focus-bg);
-    border-color: var(--color-btn-primary-focus-border);
-    box-shadow: var(--color-btn-primary-focus-shadow);
-}
-.btn-primary:active {
-    background-color: var(--color-btn-primary-focus-bg);
-    box-shadow: var(--color-btn-primary-shadow);
-}
 
 input.border-danger {
-    border-color: var(--color-btn-danger-bg) !important;
+    border-color: var(--color-btn-danger-text) !important;
     box-shadow: var(--color-btn-danger-focus-shadow) !important;
 }
 
@@ -163,15 +50,26 @@ input.border-success {
     box-shadow: var(--color-btn-primary-focus-shadow) !important;
 }
 
-.list-unstyled {
-    list-style: none;
-}
-.small {
-    font-size: 12px;
-}
-.text-danger {
-    color: var(--color-btn-danger-bg);
-}
 .formulate-input-errors {
-    margin-bottom: 15px;
+    margin-bottom: 8px;
+    list-style: none;
+    color: var(--color-btn-danger-text);
+}
+
+.formulate-input-element[data-type="vue-select"] {
+    background-color: var(--color-input-bg);
+}
+.formulate-input-element[data-type="vue-select"] > div {
+    border: 1px solid var(--color-input-border);
+}
+
+.formulate-form .btn {
+    margin-top: 12px;
+}
+.formulate-form .input-block {
+    margin-bottom: 8px;
+}
+
+.formulate-input[data-classification="group"].form-actions .btn {
+    margin-left: 8px;
 }

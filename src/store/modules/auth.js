@@ -12,7 +12,7 @@ const actions = {
     checkAuth: (store) => {
         return authApi.checkAuth()
             .json(user => {
-                if(user && user.id) store.dispatch('setUser', user)
+                if(user && user._id) store.dispatch('setUser', user)
             })
     },
     register: (store, params) => {
@@ -25,7 +25,9 @@ const actions = {
         })
     },
     logout: (store) => {
-        return authApi.logout()
+        return authApi.logout().res(res => {
+            store.dispatch('setUser', {})
+        })
     }
 }
 

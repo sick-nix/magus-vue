@@ -3,7 +3,7 @@
     <div class="header__banner">
       <div class="banner__container">
         <router-link to="/">
-          <img class="banner__brand" src="$assets.brand"  alt=""/>
+          <img class="banner__brand" :src="$assets.brand"  alt=""/>
         </router-link>
       </div>
     </div>
