@@ -89,7 +89,6 @@ export default {
 
 <style scoped>
 .chat__commands {
-  border-top: 1px solid var(--color-border-primary);
   margin-top: auto;
   display: flex;
   align-items: center;

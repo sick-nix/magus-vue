@@ -1,4 +1,5 @@
 import HandlerAbstract from "websocket/Handler/Abstract"
+import {HANDLER_MAP} from "websocket/Handler/Map"
 
 class Handler {
     /**
@@ -27,9 +28,7 @@ class Handler {
     }
 
     _getHandlerMap() {
-        return {
-
-        }
+        return HANDLER_MAP
     }
 }
 

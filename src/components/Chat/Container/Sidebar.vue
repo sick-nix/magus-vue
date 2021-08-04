@@ -1,6 +1,6 @@
 <template>
   <div class="chat__sidebar">
-    <!-- message list -->
+    <room-list></room-list>
     <chat-commands></chat-commands>
     <user-info></user-info>
   </div>
@@ -9,10 +9,11 @@
 <script>
 import UserInfo from "components/Chat/Container/Sidebar/User"
 import ChatCommands from "components/Chat/Container/Sidebar/Commands"
+import RoomList from "components/Chat/Container/Sidebar/RoomList"
 
 export default {
   name: "ChatSidebar",
-  components: {ChatCommands, UserInfo}
+  components: {RoomList, ChatCommands, UserInfo}
 }
 </script>
 

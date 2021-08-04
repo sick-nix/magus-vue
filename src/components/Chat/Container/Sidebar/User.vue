@@ -60,6 +60,7 @@ export default {
 .avatar {
   width: 48px;
   height: 48px;
+  border: 1px solid var(--color-border-tertiary);
 }
 .dropdown .btn {
   padding-inline: 10px;

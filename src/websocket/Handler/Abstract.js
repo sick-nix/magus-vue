@@ -1,3 +1,5 @@
+import store from "store"
+
 class HandlerAbstract {
     _message = null
 
@@ -28,6 +30,13 @@ class HandlerAbstract {
      */
     getMessage() {
         return this._message
+    }
+
+    /**
+     * @return {Vuex.Store}
+     */
+    get $store() {
+        return store
     }
 }
 
