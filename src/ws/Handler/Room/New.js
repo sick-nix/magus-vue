@@ -1,4 +1,4 @@
-import HandlerAbstract from "websocket/Handler/Abstract"
+import HandlerAbstract from "ws/Handler/Abstract"
 
 
 class RoomNew extends HandlerAbstract {

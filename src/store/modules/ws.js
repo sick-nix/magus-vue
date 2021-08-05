@@ -1,7 +1,8 @@
 import config, {CONFIG_OPTIONS} from "constants/config"
 import Cookies from "js-cookie"
-import MagusWebSocket from "websocket/MagusWebSocket"
+import MagusWebSocket from "ws/MagusWebSocket"
 import Vue from "vue"
+import {waitForOpenSocket} from "util/ws"
 
 const state = () => ({
     connection: null
@@ -12,7 +13,7 @@ const getters = {
 }
 
 const actions = {
-    createConnection(store, params = {}) {
+    async createConnection(store, params = {}) {
         let { url = config[CONFIG_OPTIONS.WS_ENDPOINT] } = params
         const magusCookie = Cookies.get('magus') || ''
         url = `${url}?magus=${magusCookie}`
@@ -24,6 +25,11 @@ const actions = {
         })
         store.commit('setConnection', {connection})
         Vue.prototype.$socket = store.getters.connection
+        await store.dispatch('getRooms')
+    },
+    async sendMessage(store, message) {
+        await waitForOpenSocket(store.getters.connection)
+        store.getters.connection.send(message)
     }
 }
 

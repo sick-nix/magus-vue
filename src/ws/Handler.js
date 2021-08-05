@@ -1,19 +1,21 @@
-import HandlerAbstract from "websocket/Handler/Abstract"
-import {HANDLER_MAP} from "websocket/Handler/Map"
+import HandlerAbstract from "ws/Handler/Abstract"
+import {HANDLER_MAP} from "ws/Handler/Map"
 
 class Handler {
     /**
      * @param {Message} msg
      */
     handle(msg) {
-        if(!msg.getType()) return this
+        if(!msg.getType()) throw new Error('Cannot handle message without type')
         let msgHandler = this.getMessageHandler(msg.getType())
-        if(msgHandler) {
-            msgHandler = new msgHandler(msg)
+        if(!msgHandler) throw new Error(`Could not find handler for event: ${msg.getType()}`)
 
-            if(msgHandler instanceof HandlerAbstract)
-                msgHandler.run()
-        }
+        const instance = new msgHandler(msg)
+
+        if(instance instanceof HandlerAbstract)
+            instance.run()
+
+        return this
     }
 
     /**
@@ -21,7 +23,6 @@ class Handler {
      * @returns {null|*}
      */
     getMessageHandler(type) {
-        if(!type) return null
         const msgHandler = this._getHandlerMap()[type]
         if(msgHandler) return msgHandler
         return null

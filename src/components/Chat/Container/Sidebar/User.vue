@@ -4,6 +4,8 @@
         v-if="user && user.avatar"
         class="avatar"
         :src="user.avatar"
+        width="48"
+        height="48"
         alt=""
         :title="user.username"
     />
@@ -58,8 +60,6 @@ export default {
   align-items: center;
 }
 .avatar {
-  width: 48px;
-  height: 48px;
   border: 1px solid var(--color-border-tertiary);
 }
 .dropdown .btn {

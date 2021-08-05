@@ -55,7 +55,7 @@ module.exports = {
             store: getPath("src/store"),
             util: getPath("src/util"),
             views: getPath("src/views"),
-            websocket: getPath("src/websocket"),
+            ws: getPath("src/ws"),
             src: getPath("src"),
             libs: getPath("libs")
         },

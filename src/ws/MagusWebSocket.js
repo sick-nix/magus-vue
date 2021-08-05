@@ -1,5 +1,5 @@
-import Message from "websocket/Message"
-import Handler from "websocket/Handler"
+import Message from "ws/Message"
+import Handler from "ws/Handler"
 import RobustWebSocket from "robust-websocket"
 
 class MagusWebSocket extends RobustWebSocket {
