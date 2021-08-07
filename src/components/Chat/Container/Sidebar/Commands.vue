@@ -1,17 +1,17 @@
 <template>
   <div class="chat__commands">
     <div class="commands BtnGroup d-block">
-      <div class="BtnGroup-item btn" title="Create a Channel" @click="$modal.show('createChannel')">
+      <div class="BtnGroup-item btn" title="Create a Channel" @click="openModal('channel')">
         <i class="las la-users"></i>
       </div>
-      <div class="BtnGroup-item btn" title="Direct Chat">
+      <div class="BtnGroup-item btn" title="Direct Chat" @click="openModal('direct')">
         <i class="las la-user-friends"></i>
       </div>
     </div>
-    <modal name="createChannel">
-      <form-wrapper :text-props="{ headerText: 'Create a new Channel'}" link-to="/register">
+    <modal name="createRoom">
+      <form-wrapper :text-props="{ headerText: getFormHeaderText }">
         <formulate-form
-          :schema="getCreateChannelSchema"
+          :schema="getRoomSchema"
           v-model="formValues"
         >
         </formulate-form>
@@ -22,34 +22,51 @@
 
 <script>
 import channelSchema from 'components/Form/Schema/Chat/channel'
+import directSchema from 'components/Form/Schema/Chat/direct'
 import FormWrapper from 'components/Form/Wrapper'
 import {mergeWithUniqueKeys} from "util/array"
+import {ROOM_TYPES} from "constants/chat"
 
 export default {
   name: "ChatCommands",
   components: {FormWrapper},
   data() {
     return {
-      createChannelSchema: null,
       usersOptions: [],
       formValues: null,
-      searchedUsers: []
+      searchedUsers: [],
+      selectedType: null
     }
   },
   computed: {
-    getCreateChannelSchema() {
-      return channelSchema({
+    getRoomSchema() {
+      const params = {
         options: this.searchedUsers,
         search: this.getUsers,
         cancel: () => {
-          this.$modal.hide('createChannel')
+          this.$modal.hide('createRoom')
+          this.selectedType = null
         },
         create: async () => {
           await this.$store.dispatch('createRoom', this.formValues)
-          this.$modal.hide('createChannel')
+          this.$modal.hide('createRoom')
+          this.selectedType = null
         },
         selectOpen: this.getUsers
-      })
+      }
+      switch (this.selectedType) {
+        case ROOM_TYPES.CHANNEL:
+          return channelSchema(params)
+        case ROOM_TYPES.DIRECT:
+          return directSchema(params)
+      }
+    },
+    getFormHeaderText() {
+      if(!this.selectedType) return ''
+      switch (this.selectedType) {
+        case ROOM_TYPES.CHANNEL: return 'Create a new Channel'
+        case ROOM_TYPES.DIRECT: return 'Create a new Direct'
+      }
     }
   },
   methods: {
@@ -58,6 +75,10 @@ export default {
       const users = await request.json()
       this.usersOptions = users.map(user => ({value: user._id, label: user.username}))
       this.searchedUsers = mergeWithUniqueKeys(this.usersOptions, this.searchedUsers, 'value')
+    },
+    openModal(type) {
+      this.selectedType = type
+      this.$modal.show('createRoom')
     }
   }
 }

@@ -1,9 +1,16 @@
+import {ROOM_TYPES} from "constants/chat"
+
 const state = () => ({
-    rooms: []
+    rooms: [],
+    currentRoom: null
 })
 
 const getters = {
-    rooms: state => state.rooms
+    currentRoom: state => state.currentRoom,
+    isCurrentRoom: state => room => state.currentRoom === room,
+    rooms: state => state.rooms,
+    channels: state => state.rooms.filter(room => room.type === ROOM_TYPES.CHANNEL),
+    directs: state => state.rooms.filter(room => room.type === ROOM_TYPES.DIRECT)
 }
 
 const actions = {
@@ -12,15 +19,21 @@ const actions = {
     },
     addRoom(store, params) {
         store.commit('addRoom', params)
+    },
+    setCurrentRoom(store, room) {
+        store.commit('setCurrentRoom', room)
     }
 }
 
 const mutations = {
-    setRooms(store, rooms) {
-        store.rooms = rooms
+    setRooms(state, rooms) {
+        state.rooms = rooms
     },
-    addRoom(store, { room }) {
-        store.rooms.push(room)
+    addRoom(state, { room }) {
+        state.rooms.push(room)
+    },
+    setCurrentRoom(state, room) {
+        state.currentRoom = room
     }
 }
 

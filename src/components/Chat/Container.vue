@@ -22,5 +22,6 @@ export default {
   border-radius: 6px;
   border: 1px solid var(--color-border-secondary);
   background-color: var(--color-bg-tertiary);
+  display: flex;
 }
 </style>

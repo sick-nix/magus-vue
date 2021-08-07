@@ -1,12 +1,19 @@
+import {ROOM_TYPES} from "constants/chat"
+
 export default function (params = {}) {
-    return [
-        {
+    //@todo configure depending on the room type
+    return Object.values(getChannelConfig(params))
+}
+
+export const getChannelConfig = (params) => {
+    return {
+        name: {
             type: 'text',
             name: 'name',
             label: 'Enter the channel\'s name',
             validation: 'required'
         },
-        {
+        users: {
             type: 'vue-select',
             label: 'Choose the users',
             name: 'users',
@@ -15,7 +22,7 @@ export default function (params = {}) {
             '@search': params.search,
             '@open': params.selectOpen
         },
-        {
+        group: {
             type: 'group',
             class: "form-actions",
             children: [
@@ -32,6 +39,11 @@ export default function (params = {}) {
                     '@click': params.create
                 }
             ]
+        },
+        type: {
+            type: 'hidden',
+            name: 'type',
+            value: ROOM_TYPES.CHANNEL
         }
-    ]
+    }
 }

@@ -3,5 +3,5 @@ import brand from 'assets/images/brand.png'
 
 export default {
     css,
-    brand
+    brand,
 }
