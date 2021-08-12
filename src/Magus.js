@@ -4,6 +4,7 @@ import _ from 'lodash'
 import {getNestedValue} from "util/object"
 import mitt from "mitt"
 import {Notyf} from "notyf"
+import { Emitter } from 'mitt'
 
 class Magus {
     static _instance = null
@@ -43,6 +44,10 @@ class Magus {
         return this._config
     }
 
+    /**
+     * @param {} option
+     * @return {*}
+     */
     getConfigOption(option) {
         if(_.isString(option))
             option = [ option ]
@@ -50,19 +55,33 @@ class Magus {
         return getNestedValue(this.getConfig(), option)
     }
 
+    /**
+     * @param {string} path
+     * @return {string}
+     */
     getUrl(path) {
         return v.trimRight(this.getConfigOption(CONFIG_OPTIONS.BASE_URL), '/') + '/' + v.trimLeft(path, '/')
     }
 
+    /**
+     * @param {store} store
+     * @return {Magus}
+     */
     static setStore(store) {
         Magus._store = store
         return Magus
     }
 
+    /**
+     * @return {store}
+     */
     static getStore() {
         return Magus._store
     }
 
+    /**
+     * @return {Emitter}
+     */
     static getGlobalEventBus() {
         if(!Magus._globalEventBus) Magus._globalEventBus = mitt()
         return Magus._globalEventBus

@@ -3,8 +3,12 @@ import _ from 'lodash'
 class MagusObject {
     _data = null
 
-    constructor() {
-        this.setData({})
+    /**
+     * @param {Object} data
+     * @return {MagusObject}
+     */
+    constructor(data = {}) {
+        this.setData(data)
 
         return new Proxy(this, this.getProxyHandler())
     }
@@ -48,10 +52,17 @@ class MagusObject {
         return this
     }
 
+    /**
+     * @return {Object}
+     */
     getProxyHandler() {
         return this._getDefaultProxyHandler()
     }
 
+    /**
+     * @return {Object}
+     * @private
+     */
     _getDefaultProxyHandler() {
         return {
             get: function (obj, prop) {

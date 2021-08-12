@@ -1,17 +1,23 @@
 <template>
   <div class="chat__container">
     <chat-sidebar></chat-sidebar>
-    <chat-body></chat-body>
+    <chat-body v-if="currentRoom"></chat-body>
   </div>
 </template>
 
 <script>
 import ChatSidebar from "components/Chat/Container/Sidebar"
 import ChatBody from "components/Chat/Container/Body"
+import {mapGetters} from "vuex"
 
 export default {
   name: "ChatContainer",
-  components: {ChatBody, ChatSidebar}
+  components: {ChatBody, ChatSidebar},
+  computed: {
+    ...mapGetters({
+      currentRoom: 'currentRoom'
+    })
+  }
 }
 </script>
 

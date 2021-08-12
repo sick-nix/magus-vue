@@ -5,6 +5,7 @@ import user from "./modules/user"
 import ws from "./modules/ws"
 import wsMessages from "./modules/ws/messages"
 import room from "store/modules/room"
+import message from "store/modules/message"
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -13,6 +14,7 @@ export default new Vuex.Store({
         user,
         ws,
         wsMessages,
-        room
+        room,
+        message
     }
 })

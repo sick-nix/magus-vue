@@ -1,5 +1,10 @@
 import _ from 'lodash'
 
+/**
+ * @param {Object} obj
+ * @param {Array} propArray
+ * @return {*}
+ */
 export const getNestedValue = (obj, propArray) => {
     if(!(_.isArray(propArray) && propArray.length)) return null
     const key = propArray[0]

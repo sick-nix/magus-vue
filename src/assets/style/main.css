@@ -17,6 +17,10 @@ body {
     height: 100vh;
     width: 100vw;
     font-family: 'magus', Arial, sans-serif;
+
+    --reply-color: #0d6efd;
+    --private-color: #6c757d;
+    --edit-color: #ffc107;
 }
 
 .pointer {

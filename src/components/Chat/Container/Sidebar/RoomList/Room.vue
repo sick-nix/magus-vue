@@ -12,12 +12,13 @@
 <script>
 import CustomAvatar from "components/custom/Avatar"
 import {mapGetters} from "vuex"
+import ReactiveObject from "util/class/Reactive/Object"
 export default {
   name: "Room",
   components: {CustomAvatar},
   props: {
     room: {
-      type: Object,
+      type: ReactiveObject,
       required: true
     }
   },
@@ -27,8 +28,9 @@ export default {
     })
   },
   methods: {
-    setCurrentRoom() {
-      this.$store.dispatch('setCurrentRoom', this.room)
+    async setCurrentRoom() {
+      if(!this.isCurrentRoom(this.room))
+        await this.$store.dispatch('roomEnter', this.room.getData())
     }
   }
 }
