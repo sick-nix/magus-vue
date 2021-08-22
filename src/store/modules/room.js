@@ -1,5 +1,6 @@
 import {ROOM_TYPES} from "constants/chat"
 import ReactiveObject from "util/class/Reactive/Object"
+import {removeAndResetIndexes} from "util/array"
 
 const state = () => ({
     rooms: [],
@@ -10,10 +11,16 @@ const getters = {
     currentRoom: state => state.currentRoom,
     isCurrentRoom: state => room => state.currentRoom === room,
     rooms: state => state.rooms,
-    channels: state => state.rooms.filter(room => room.type === ROOM_TYPES.CHANNEL),
-    directs: state => state.rooms.filter(room => room.type === ROOM_TYPES.DIRECT),
+    channels: (state, getters) => state.rooms.filter(room => getters.isChannel(room)),
+    directs: (state, getters) => state.rooms.filter(room => getters.isDirect(room)),
     getRoomById: state => id => state.rooms.find(room => room._id === id),
     getRoomIndexById: state => id => state.rooms.findIndex(room => room._id === id),
+    isChannel: state => room => room.type === ROOM_TYPES.CHANNEL,
+    isDirect: state => room => room.type === ROOM_TYPES.DIRECT,
+    isUserOwnerOfRoom: state => (room, user) => {
+        if(user instanceof Object) user = user._id
+        return room.ownerUser === user
+    }
 }
 
 const actions = {
@@ -21,10 +28,19 @@ const actions = {
         store.commit('setRooms', ReactiveObject.getReactiveObject(rooms))
     },
     addRoom(store, room) {
-        store.commit('addRoom', ReactiveObject.getReactiveObject(room))
+        const reactiveRoom = ReactiveObject.getReactiveObject(room)
+        const existingRoom = store.getters.getRoomById(reactiveRoom._id)
+        if(existingRoom)
+            existingRoom.addData(reactiveRoom.getData())
+        else
+            store.commit('addRoom', reactiveRoom)
     },
     setCurrentRoom(store, room) {
         store.commit('setCurrentRoom', room)
+    },
+    removeRoom(store, room) {
+        const reactiveRoom = store.getters.getRoomById(room._id)
+        removeAndResetIndexes(store.state.rooms, reactiveRoom)
     }
 }
 

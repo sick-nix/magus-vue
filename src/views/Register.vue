@@ -24,6 +24,7 @@
 import getRegisterSchema from "components/Form/Schema/register"
 import CustomHeader from "components/Header"
 import FormWrapper from "components/Form/Wrapper"
+import {renderToasts} from "util/error"
 
 export default {
   name: "Register",
@@ -56,8 +57,10 @@ export default {
     async register() {
       const request = await this.$store.dispatch('register', this.formValues)
       request.json(async json => {
-        if(json && json.success)
+        if(json && json.success) {
           await this.$router.push('/login')
+          renderToasts(json)
+        }
       })
     }
   }

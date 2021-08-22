@@ -14,14 +14,21 @@ class Message extends MagusObject {
     _meta = null
 
     /**
+     * @type {null|string}
+     * @private
+     */
+    _fromUser = null
+
+    /**
      * @returns {Message}
      */
     constructor(msg) {
         super()
 
-        const { type, data = {}, meta = {} } = msg
+        const { type, data = {}, meta = {}, fromUser } = msg
         this.setType(type).setData(data)
         this._setMeta(new MagusObject(meta))
+        this.setFromUser(fromUser)
         return this
     }
 
@@ -59,13 +66,30 @@ class Message extends MagusObject {
     }
 
     /**
+     * @param {string} fromUser
+     * @returns {Message}
+     */
+    setFromUser(fromUser) {
+        this._fromUser = fromUser
+        return this
+    }
+
+    /**
+     * @returns {null|string}
+     */
+    getFromUser() {
+        return this._fromUser
+    }
+
+    /**
      * @returns {string}
      */
     toString() {
         return JSON.stringify({
             type: this.getType(),
             data: this.getData(),
-            meta: this.getMeta().getData()
+            meta: this.getMeta().getData(),
+            fromUser: this.getFromUser()
         })
     }
 }

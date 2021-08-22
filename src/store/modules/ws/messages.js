@@ -10,7 +10,8 @@ const state = () => ({
 const getters = {
     fetchingCurrently: store => store.fetchingCurrently,
     lastFetchedMessageByRoom: store => store.lastFetchedMessageByRoom,
-    lastMessageCount: store => store.lastMessageCount
+    lastMessageCount: store => store.lastMessageCount,
+    lastMessageCountByRoom: store => room => store.lastMessageCount[room._id]
 }
 
 const actions = {
@@ -58,6 +59,20 @@ const actions = {
     roomEnter(store, room) {
         const message = new Message({
             type: MESSAGE_DISPATCHERS.ROOM_ENTER,
+            data: room
+        })
+        store.dispatch('sendMessage', message)
+    },
+    roomHide(store, room) {
+        const message = new Message({
+            type: MESSAGE_DISPATCHERS.ROOM_HIDE,
+            data: room
+        })
+        store.dispatch('sendMessage', message)
+    },
+    roomDelete(store, room) {
+        const message = new Message({
+            type: MESSAGE_DISPATCHERS.ROOM_DELETE,
             data: room
         })
         store.dispatch('sendMessage', message)

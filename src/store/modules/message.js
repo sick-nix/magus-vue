@@ -16,7 +16,10 @@ const actions = {
         store.commit('setSelectedMode', value)
     },
     addMessage(store, params) {
-        let { message } = params
+        let { room, message } = params
+        const roomObj = store.getters.getRoomById(room?._id || message?.room)
+        if(roomObj && !message.private)
+            roomObj.messageCount++
         store.dispatch('setMessages', {messages: [message]})
     },
     setMessages(store, params) {

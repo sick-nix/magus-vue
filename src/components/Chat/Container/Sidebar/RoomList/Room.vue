@@ -1,11 +1,15 @@
 <template>
   <div
+      v-if="!room.hidden"
       class="room"
-      :class="{ selected: isCurrentRoom(room) }"
+      :class="{ selected: isCurrentRoom }"
       @click="setCurrentRoom"
   >
-    <custom-avatar :name="room.name"></custom-avatar>
+    <custom-avatar :name="room.name" :avatar-uri="getOtherUserAvatar"></custom-avatar>
     <div class="room__name">{{ room.name }}</div>
+    <transition name="test">
+      <div v-show="unreadMessages > 0" class="room__msg-count">{{ unreadMessages }}</div>
+    </transition>
   </div>
 </template>
 
@@ -13,6 +17,7 @@
 import CustomAvatar from "components/custom/Avatar"
 import {mapGetters} from "vuex"
 import ReactiveObject from "util/class/Reactive/Object"
+import {ROOM_TYPES} from "constants/chat"
 export default {
   name: "Room",
   components: {CustomAvatar},
@@ -24,13 +29,45 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isCurrentRoom: 'isCurrentRoom'
-    })
+      lastMessageCountByRoom: 'lastMessageCountByRoom',
+      user: 'user'
+    }),
+    /**
+     * Note: "overwrites" in this component the isCurrentRoom getter from store
+     * @return {boolean}
+     */
+    isCurrentRoom() {
+      return this.$store.getters.isCurrentRoom(this.room)
+    },
+    unreadMessages() {
+      return Number(this.room.messageCount) - Number(this.lastMessageCountByRoom(this.room))
+    },
+    isChannel() {
+      return this.room.type === ROOM_TYPES.CHANNEL
+    },
+    isDirect() {
+      return this.room.type === ROOM_TYPES.DIRECT
+    },
+    otherUser() {
+      if(!this.isDirect) return null
+      return this.room.users.find(user => user._id !== this.user._id)
+    },
+    getOtherUserAvatar() {
+      if(this.otherUser) return this.otherUser.avatar
+      return null
+    }
   },
   methods: {
     async setCurrentRoom() {
-      if(!this.isCurrentRoom(this.room))
+      if(!this.isCurrentRoom)
         await this.$store.dispatch('roomEnter', this.room.getData())
+    }
+  },
+  watch: {
+    isCurrentRoom: {
+      handler: async function (newVal, oldVal) {
+        if(newVal) await this.$store.dispatch('roomEnter', this.room.getData())
+      }
     }
   }
 }
@@ -53,5 +90,23 @@ export default {
 }
 .room__name {
   margin-left: 10px;
+}
+.room__msg-count {
+  margin-left: auto;
+  margin-right: 10px;
+  background: var(--color-bg-success);
+  padding: 5px;
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.test-enter-active, .test-leave-active {
+  transition: opacity 1s;
+}
+.test-enter, .test-leave-to {
+  opacity: 0;
 }
 </style>

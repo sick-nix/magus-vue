@@ -1,19 +1,24 @@
 <template>
   <div class="custom--avatar" :style="{backgroundColor: getRandomColor}">
-    <span class="avatar__initials">{{ initials }}</span>
+    <img v-if="avatarUri" class="avatar__img" :src="avatarUri" alt=""/>
+    <span v-else class="avatar__initials">{{ initials }}</span>
   </div>
 </template>
 
 <script>
 import v from 'voca'
 import stc from "string-to-color"
-// @todo complete with random background
+
 export default {
   name: "CustomAvatar",
   props: {
     name: {
       type: String,
       required: true,
+    },
+    avatarUri: {
+      type: String,
+      default: null
     }
   },
   computed: {
@@ -36,6 +41,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.avatar__img {
+  border-radius: 6px;
 }
 .avatar__initials {
   font-weight: 900;

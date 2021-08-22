@@ -9,23 +9,17 @@
         alt=""
         :title="user.username"
     />
-    <details class="dropdown details-reset details-overlay d-inline-block">
-      <summary class="btn" aria-haspopup="true">
-        <i class="las la-ellipsis-v"></i>
-      </summary>
-
-      <ul class="dropdown-menu dropdown-menu-ne">
-        <a class="dropdown-item" href="#" @click="logout">Logout</a>
-      </ul>
-    </details>
+    <custom-dropdown :options="getDropdownOptions"/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex"
+import CustomDropdown from "components/custom/Dropdown"
 
 export default {
   name: "UserInfo",
+  components: {CustomDropdown},
   data() {
     return {
       showDropdown: false
@@ -34,7 +28,15 @@ export default {
   computed: {
     ...mapGetters({
       user: "user"
-    })
+    }),
+    getDropdownOptions() {
+      return [
+        {
+          click: this.logout,
+          label: 'Logout'
+        }
+      ]
+    }
   },
   methods: {
     async logout() {
@@ -61,13 +63,5 @@ export default {
 }
 .avatar {
   border: 1px solid var(--color-border-tertiary);
-}
-.dropdown .btn {
-  padding-inline: 10px;
-}
-.dropdown .btn > i {
-  font-weight: 900;
-  opacity: 1;
-  font-size: 20px;
 }
 </style>
