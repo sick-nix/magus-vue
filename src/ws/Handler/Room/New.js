@@ -7,8 +7,10 @@ class RoomNew extends HandlerAbstract {
         this.$store.dispatch('addRoom', room)
         const reactiveRoom = this.$store.getters.getRoomById(room._id)
 
-        if(this.$store.getters.user?._id === this.getMessage().getFromUser() && !reactiveRoom.hidden)
+        if(this.$store.getters.user?._id === this.getMessage().getFromUser() && !reactiveRoom.hidden) {
             this.$store.dispatch('setCurrentRoom', reactiveRoom)
+            this.$store.dispatch('roomEnter', reactiveRoom.getData())
+        }
     }
 }
 

@@ -48,15 +48,6 @@ export default {
       await this.$nextTick()
       scrollToBottom(this.$el)
     }
-  },
-  watch: {
-    'currentRoom.messages': {
-      deep: true,
-      immediate: true,
-      async handler(newVal, oldVal) {
-        if(newVal && !oldVal) await this.doScrollToBottom()
-      }
-    }
   }
 }
 </script>

@@ -5,7 +5,9 @@ export const MESSAGE_HANDLERS = {
     ROOM_DELETE: 'room.delete',
     ROOM_HIDE: 'room.hide',
     MESSAGE_NEW: 'message.new',
-    MESSAGE_GET: 'message.get'
+    MESSAGE_GET: 'message.get',
+    MESSAGE_EDIT: 'message.edit',
+    MESSAGE_DELETE: 'message.delete'
 }
 
 export const MESSAGE_DISPATCHERS = {
@@ -15,7 +17,9 @@ export const MESSAGE_DISPATCHERS = {
     ROOM_DELETE: 'room.delete',
     ROOM_HIDE: 'room.hide',
     MESSAGE_NEW: 'message.new',
-    MESSAGE_GET: 'message.get'
+    MESSAGE_GET: 'message.get',
+    MESSAGE_EDIT: 'message.edit',
+    MESSAGE_DELETE: 'message.delete'
 }
 
 export const ROOM_TYPES = {
@@ -27,4 +31,9 @@ export const MESSAGE_REPLY_MODES = {
     REPLY: 'reply',
     PRIVATE: 'private',
     EDIT: 'edit'
+}
+
+export const MESSAGE_GET_ORIGIN = {
+    ROOM_ENTER: 0,
+    SCROLL: 1
 }

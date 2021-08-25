@@ -2,11 +2,6 @@ import {mapGetters} from "vuex"
 import {MESSAGE_REPLY_MODES} from "constants/chat"
 
 export const replyBoxMixin = {
-    data() {
-        return {
-            selectedMode: null
-        }
-    },
     computed: {
         ...mapGetters({
             isReply: 'isReply',

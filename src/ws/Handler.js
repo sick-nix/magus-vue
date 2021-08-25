@@ -1,6 +1,6 @@
 import HandlerAbstract from "ws/Handler/Abstract"
 import {HANDLER_MAP} from "ws/Handler/Map"
-import store from 'store'
+import Magus from 'src/Magus'
 
 class Handler {
     /**
@@ -14,7 +14,7 @@ class Handler {
         const instance = new msgHandler(msg)
 
         if(msg.getMeta()?.lastMessageCount)
-            await store.dispatch('setLastMessageCount', msg.getMeta()?.lastMessageCount)
+            await Magus.getStore().dispatch('setLastMessageCount', msg.getMeta()?.lastMessageCount)
 
         if(instance instanceof HandlerAbstract)
             instance.run()

@@ -1,17 +1,27 @@
 <template>
   <div class="message">
     <div class="message__avatar">
-      <custom-avatar :name="createdBy"></custom-avatar>
+      <custom-avatar
+          :avatar-uri="createdBy.avatar || ''"
+          :name="createdBy.username || ''"
+      ></custom-avatar>
     </div>
     <div class="message__middle">
       <div class="middle__header">
-        <div class="message__created-by">{{ createdBy }}</div>
+        <div class="message__created-by">{{ createdBy.username }}</div>
         <div class="message__created-at">{{ formatDateTime(message.createdAt) }}</div>
+        <div class="message__edited" v-if="message.createdAt !== message.updatedAt"><i class="las la-pen"></i></div>
       </div>
-      <div class="middle__content">{{ message.content }}</div>
+      <vue-markdown-plus
+          class="middle__content"
+          :html="false"
+          :source="message.content || ''"
+      />
     </div>
     <div v-if="isCreatedByUser" class="message__shortcuts">
-      <div>test</div>
+      <custom-btn-group
+        :buttons="buttonGroup"
+      />
     </div>
   </div>
 </template>
@@ -21,10 +31,15 @@ import {mapGetters} from "vuex"
 import ReactiveObject from "util/class/Reactive/Object"
 import CustomAvatar from "components/custom/Avatar"
 import {utilMixin} from "mixins/util"
+import VueMarkdownPlus from "vue-markdown-plus"
+import CustomBtnGroup from "components/custom/BtnGroup"
+import {MESSAGE_REPLY_MODES} from "constants/chat"
+import {EVENTS} from "constants/events"
+import Magus from "src/Magus"
 
 export default {
   name: "Message",
-  components: {CustomAvatar},
+  components: {CustomBtnGroup, CustomAvatar, VueMarkdownPlus},
   mixins: [utilMixin],
   props: {
     message: {
@@ -39,11 +54,32 @@ export default {
     }),
     createdBy() {
       const user = this.getUserById(this.currentRoom, this.message.createdBy)
-      if(!user) return ''
-      return user.username
+      if(!user) return {}
+      return user
     },
     isCreatedByUser() {
       return this.message.createdBy === this.user._id
+    },
+    buttonGroup() {
+      return [
+        {
+          title: 'Edit',
+          click: () => {
+            this.$store.dispatch('setSelectedMode', MESSAGE_REPLY_MODES.EDIT)
+            Magus.getGlobalEventBus().emit(EVENTS.EDIT_MESSAGE, {
+              message: this.message
+            })
+          },
+          icon: 'las la-edit'
+        },
+        {
+          title: 'Delete',
+          click: () => {
+            this.$store.dispatch('deleteMessage', this.message.getData())
+          },
+          icon: 'las la-trash-alt'
+        }
+      ]
     }
   }
 }
@@ -54,6 +90,15 @@ export default {
   width: 32px;
   height: 32px;
 }
+.middle__content * {
+  white-space: pre-wrap;
+}
+.message__shortcuts .btn {
+  padding: 5px 8px;
+  background: var(--color-bg-overlay);
+  border: none;
+  font-size: 18px;
+}
 </style>
 
 <style scoped>
@@ -63,6 +108,9 @@ export default {
   background-color: white;
   padding: 10px;
   position: relative;
+}
+.message:hover {
+  background: var(--color-btn-hover-bg);
 }
 .message__avatar {
   margin-right: 10px;
@@ -81,8 +129,17 @@ export default {
 .message__shortcuts {
   position: absolute;
   display: none;
+  right: 10px;
+  top: -15px;
+  background: var(--color-bg-overlay);
+  border: 1px solid var(--color-btn-border);
+  border-radius: 6px;
+  padding: 3px;
 }
 .message:hover .message__shortcuts {
   display: block;
+}
+.message__edited {
+  margin-left: 10px;
 }
 </style>

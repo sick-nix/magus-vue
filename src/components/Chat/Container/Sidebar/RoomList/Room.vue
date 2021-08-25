@@ -7,9 +7,7 @@
   >
     <custom-avatar :name="room.name" :avatar-uri="getOtherUserAvatar"></custom-avatar>
     <div class="room__name">{{ room.name }}</div>
-    <transition name="test">
-      <div v-show="unreadMessages > 0" class="room__msg-count">{{ unreadMessages }}</div>
-    </transition>
+    <div v-show="unreadMessages > 0" class="room__msg-count">{{ unreadMessages }}</div>
   </div>
 </template>
 
@@ -62,13 +60,6 @@ export default {
       if(!this.isCurrentRoom)
         await this.$store.dispatch('roomEnter', this.room.getData())
     }
-  },
-  watch: {
-    isCurrentRoom: {
-      handler: async function (newVal, oldVal) {
-        if(newVal) await this.$store.dispatch('roomEnter', this.room.getData())
-      }
-    }
   }
 }
 </script>
@@ -102,11 +93,5 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.test-enter-active, .test-leave-active {
-  transition: opacity 1s;
-}
-.test-enter, .test-leave-to {
-  opacity: 0;
 }
 </style>

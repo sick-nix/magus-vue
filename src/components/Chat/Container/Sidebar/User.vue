@@ -9,6 +9,10 @@
         alt=""
         :title="user.username"
     />
+    <div class="info__identifications">
+      <div class="identifications__username">{{ user.username }}</div>
+      <div class="identifications__email">{{ user.email }}</div>
+    </div>
     <custom-dropdown :options="getDropdownOptions"/>
   </div>
 </template>
@@ -60,8 +64,22 @@ export default {
   padding: 8px;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 .avatar {
   border: 1px solid var(--color-border-tertiary);
+}
+.info__identifications {
+  margin-inline: 10px;
+  overflow: hidden;
+}
+.identifications__username {
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.identifications__email {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

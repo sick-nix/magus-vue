@@ -39,6 +39,9 @@ class Magus {
         return this
     }
 
+    /**
+     * @return {null|Object}
+     */
     getConfig() {
         if(!this._config) this._config = defaultConfig
         return this._config

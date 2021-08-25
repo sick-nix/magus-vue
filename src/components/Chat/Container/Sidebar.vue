@@ -23,6 +23,7 @@ export default {
   display: flex;
   flex-direction: column;
   min-width: 300px;
+  max-width: 300px;
   background-color: var(--color-bg-overlay);
   border-right: 1px solid var(--color-border-primary);
 }

@@ -31,7 +31,10 @@
 import ResizableTextarea from "components/custom/ResizableTextarea"
 import {replyBoxMixin} from "mixins/replyBox"
 import {mapGetters} from "vuex"
-import {isEnter, isShift} from "util/event"
+import {isEnter, isEscape, isShift} from "util/event"
+import Magus from "src/Magus"
+import {EVENTS} from "constants/events"
+import {MESSAGE_REPLY_MODES} from "constants/chat"
 
 export default {
   name: "ReplyBox",
@@ -40,7 +43,14 @@ export default {
   data() {
     return {
       message: null,
+      editingMessage: null,
     }
+  },
+  mounted() {
+    Magus.getGlobalEventBus().on(EVENTS.EDIT_MESSAGE, this.enableEditMode)
+  },
+  destroyed() {
+    Magus.getGlobalEventBus().off(EVENTS.EDIT_MESSAGE, this.enableEditMode)
   },
   computed: {
     ...mapGetters({
@@ -52,15 +62,40 @@ export default {
       if(isEnter(evt) && !isShift(evt)) {
         evt.preventDefault()
         this.sendMessage()
+      } else if(isEscape(evt)) {
+        this.disableEditMode()
       }
     },
     async sendMessage() {
-      await this.$store.dispatch('newMessage', {
-        content: this.message,
-        room: this.currentRoom._id,
-        private: this.isPrivateNote
-      })
-      this.message = ''
+      switch (true) {
+        case this.isReply:
+        case this.isPrivateNote:
+            await this.$store.dispatch('newMessage', {
+              content: this.message,
+              room: this.currentRoom._id,
+              private: this.isPrivateNote
+            })
+            this.message = ''
+            break
+        case this.isEdit:
+          if(this.editingMessage) {
+            await this.$store.dispatch('editMessage', {
+              content: this.message,
+              message: this.editingMessage.getData()
+            })
+            this.message = ''
+            this.disableEditMode()
+          }
+      }
+    },
+    enableEditMode(params) {
+      const { message } = params
+      this.editingMessage = message
+      this.message = this.editingMessage.content
+    },
+    disableEditMode() {
+      this.editingMessage = null
+      this.$store.dispatch('setSelectedMode', MESSAGE_REPLY_MODES.REPLY)
     }
   }
 }

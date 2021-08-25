@@ -1,5 +1,5 @@
 import Message from "ws/Message"
-import {MESSAGE_DISPATCHERS} from "constants/chat"
+import {MESSAGE_DISPATCHERS, MESSAGE_GET_ORIGIN} from "constants/chat"
 
 const state = () => ({
     fetchingCurrently: false,
@@ -35,6 +35,20 @@ const actions = {
         })
         store.dispatch('sendMessage', message)
     },
+    editMessage(store, params) {
+        const message = new Message({
+            type: MESSAGE_DISPATCHERS.MESSAGE_EDIT,
+            data: params
+        })
+        store.dispatch('sendMessage', message)
+    },
+    deleteMessage(store, params) {
+        const message = new Message({
+            type: MESSAGE_DISPATCHERS.MESSAGE_DELETE,
+            data: params
+        })
+        store.dispatch('sendMessage', message)
+    },
     getMessages(store, params) {
         if(!params.room || store.getters.fetchingCurrently) return
         const { room, before } = params
@@ -45,7 +59,10 @@ const actions = {
         store.commit('setFetchingCurrently', true)
         const message = new Message({
             type: MESSAGE_DISPATCHERS.MESSAGE_GET,
-            data: params
+            data: {
+                ...params,
+                messagesOrigin: before === undefined ? MESSAGE_GET_ORIGIN.ROOM_ENTER : MESSAGE_GET_ORIGIN.SCROLL
+            }
         })
         store.dispatch('sendMessage', message)
 

@@ -1,13 +1,9 @@
 <template>
   <div class="chat__commands">
-    <div class="commands BtnGroup d-block">
-      <div class="BtnGroup-item btn" title="Create a Channel" @click="openModal('channel')">
-        <i class="las la-users"></i>
-      </div>
-      <div class="BtnGroup-item btn" title="Direct Chat" @click="openModal('direct')">
-        <i class="las la-user-friends"></i>
-      </div>
-    </div>
+    <custom-btn-group
+        class="commands"
+        :buttons="buttonGroup"
+    />
     <modal name="createRoom">
       <form-wrapper :text-props="{ headerText: getFormHeaderText }">
         <formulate-form
@@ -26,10 +22,11 @@ import directSchema from 'components/Form/Schema/Chat/direct'
 import FormWrapper from 'components/Form/Wrapper'
 import {mergeWithUniqueKeys} from "util/array"
 import {ROOM_TYPES} from "constants/chat"
+import CustomBtnGroup from "components/custom/BtnGroup"
 
 export default {
   name: "ChatCommands",
-  components: {FormWrapper},
+  components: {CustomBtnGroup, FormWrapper},
   data() {
     return {
       usersOptions: [],
@@ -67,6 +64,20 @@ export default {
         case ROOM_TYPES.CHANNEL: return 'Create a new Channel'
         case ROOM_TYPES.DIRECT: return 'Create a new Direct'
       }
+    },
+    buttonGroup() {
+      return [
+        {
+          title: 'Create a Channel',
+          click: () => this.openModal(ROOM_TYPES.CHANNEL),
+          icon: 'las la-users'
+        },
+        {
+          title: 'Direct Chat',
+          click: () => this.openModal(ROOM_TYPES.DIRECT),
+          icon: 'las la-user-friends'
+        }
+      ]
     }
   },
   methods: {
@@ -106,6 +117,14 @@ export default {
 .chat__commands #vs1__listbox {
   max-height: 200px;
 }
+.commands .btn {
+  padding-inline: 10px;
+}
+.commands .btn > i {
+  font-weight: 900;
+  opacity: 1;
+  font-size: 20px;
+}
 </style>
 
 <style scoped>
@@ -126,13 +145,5 @@ export default {
 }
 .chat__commands .command:hover {
   background-color: var(--color-bg-secondary);
-}
-.commands .btn {
-  padding-inline: 10px;
-}
-.commands .btn > i {
-  font-weight: 900;
-  opacity: 1;
-  font-size: 20px;
 }
 </style>
