@@ -11,6 +11,7 @@
         <div class="message__created-by">{{ createdBy.username }}</div>
         <div class="message__created-at">{{ formatDateTime(message.createdAt) }}</div>
         <div class="message__edited" v-if="message.createdAt !== message.updatedAt"><i class="las la-pen"></i></div>
+        <div class="message__private" v-if="message.private"><i class="las la-lock"></i></div>
       </div>
       <vue-markdown-plus
           class="middle__content"
@@ -155,7 +156,8 @@ export default {
 .message:hover .message__shortcuts {
   display: block;
 }
-.message__edited {
+.message__edited,
+.message__private {
   margin-left: 10px;
 }
 </style>

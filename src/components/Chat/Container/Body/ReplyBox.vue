@@ -25,6 +25,7 @@
             class="btn"
             @input-file="inputFile"
             title="Send Attachment"
+            :size="maxAttachmentSize"
         >
           <i class="las la-paperclip"></i>
         </file-upload>
@@ -56,6 +57,7 @@ import CustomButton from "components/custom/Button"
 import uuid from "uuid"
 import CustomEmojiPicker from "components/custom/EmojiPicker"
 import {insertAtCaretPosition} from "util/html"
+import {CONFIG_OPTIONS} from "constants/config"
 
 export default {
   name: "ReplyBox",
@@ -77,7 +79,10 @@ export default {
   computed: {
     ...mapGetters({
       currentRoom: 'currentRoom'
-    })
+    }),
+    maxAttachmentSize() {
+      return Magus.instance.getConfigOption(CONFIG_OPTIONS.MAX_ATTACHMENT_SIZE)
+    }
   },
   methods: {
     writeToTextarea(value) {
@@ -127,12 +132,16 @@ export default {
       if(newFile) {
         this.disableEditMode()
         const uniq = `${uuid()}-${Date.now()}`
-        await this.$store.dispatch('addAttachmentInProgress', {
-          file: newFile.file,
-          uniq
-        })
+        if(newFile.file.size > this.maxAttachmentSize)
+            Magus.notyf.error("Attachment too large!")
+        else {
+          await this.$store.dispatch('addAttachmentInProgress', {
+            file: newFile.file,
+            uniq
+          })
 
-        await this.sendMessage({uniq})
+          await this.sendMessage({uniq})
+        }
       }
     }
   }
