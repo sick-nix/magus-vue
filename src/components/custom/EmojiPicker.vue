@@ -61,7 +61,8 @@ export default {
   border-radius: 0.5rem;
   background: var(--color-bg-canvas);
   box-shadow: 1px 1px 8px #c7dbe6;
-  bottom: 0;
+  bottom: 33px;
+  right: 0;
 }
 .emoji__category {
   margin-top: 10px;

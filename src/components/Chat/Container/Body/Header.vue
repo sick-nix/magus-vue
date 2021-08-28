@@ -2,10 +2,15 @@
   <div class="chat-body__header">
     <custom-avatar :name="currentRoom.name" :avatar-uri="getOtherUserAvatar"></custom-avatar>
     <div class="room__name">{{ currentRoom.name }}</div>
-    <custom-dropdown
-        :options="getDropdownOptions"
-        :position="DROPDOWN_POSITION_SOUTH_WEST"
-    />
+    <div class="header__container--end">
+      <custom-button v-if="!isDirect(currentRoom)" title="Show Members" @click="toggleMessageListSidebar">
+        <i class="las la-user-friends"></i>
+      </custom-button>
+      <custom-dropdown
+          :options="getDropdownOptions"
+          :position="DROPDOWN_POSITION_SOUTH_WEST"
+      />
+    </div>
   </div>
 </template>
 
@@ -14,10 +19,13 @@ import {mapGetters} from "vuex"
 import CustomAvatar from "components/custom/Avatar"
 import CustomDropdown from "components/custom/Dropdown"
 import {DROPDOWN_POSITIONS} from "constants/components"
+import CustomButton from "components/custom/Button"
+import Magus from "src/Magus"
+import { EVENTS } from "constants/events"
 
 export default {
   name: "ChatBodyHeader",
-  components: {CustomDropdown, CustomAvatar},
+  components: {CustomButton, CustomDropdown, CustomAvatar},
   created() {
     this.DROPDOWN_POSITION_SOUTH_WEST = DROPDOWN_POSITIONS.SOUTH_WEST
   },
@@ -56,13 +64,19 @@ export default {
     getOtherUserAvatar() {
       return this.otherUserAvatarGetter(this.currentRoom)
     }
+  },
+  methods: {
+    toggleMessageListSidebar() {
+      Magus.getGlobalEventBus().emit(EVENTS.TOGGLE_MESSAGE_LIST_SIDEBAR)
+    }
   }
 }
 </script>
 
 <style>
-.chat-body__header .dropdown {
-  margin-left: auto;
+.chat-body__header .button--custom > i {
+  opacity: 1;
+  font-size: 20px;
 }
 </style>
 
@@ -76,5 +90,8 @@ export default {
 }
 .room__name {
   margin-left: 10px;
+}
+.header__container--end {
+  margin-left: auto;
 }
 </style>

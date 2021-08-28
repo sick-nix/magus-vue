@@ -10,16 +10,20 @@
         :title="user.username"
     />
     <div class="info__identifications">
-      <div class="identifications__username">{{ user.username }}</div>
+      <div class="identifications__username">
+        <div class="username">{{ user.username }}</div>
+        <div v-if="highlightCurrentUser" class="is-current">You</div>
+      </div>
       <div class="identifications__email">{{ user.email }}</div>
     </div>
-    <custom-dropdown :options="getDropdownOptions"/>
+    <custom-dropdown v-if="!userProp" :options="getDropdownOptions"/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex"
 import CustomDropdown from "components/custom/Dropdown"
+import MagusObject from "util/class/Magus/Object"
 
 export default {
   name: "UserInfo",
@@ -29,9 +33,19 @@ export default {
       showDropdown: false
     }
   },
+  props: {
+    userProp: {
+      type: MagusObject,
+      default: null
+    },
+    highlightCurrent: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     ...mapGetters({
-      user: "user"
+      currentUser: "user"
     }),
     getDropdownOptions() {
       return [
@@ -40,6 +54,13 @@ export default {
           label: 'Logout'
         }
       ]
+    },
+    user() {
+      if(this.userProp) return this.userProp
+      return this.currentUser
+    },
+    highlightCurrentUser() {
+      return this.highlightCurrent && this.userProp && this.userProp.email === this.currentUser.email
     }
   },
   methods: {
@@ -74,12 +95,21 @@ export default {
   overflow: hidden;
 }
 .identifications__username {
+  display: flex;
+}
+.identifications__username .username {
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.is-current {
+  margin-left: 10px;
+  font-style: italic;
+  opacity: 0.6;
+  line-height: 17px;
+}
 .identifications__email {
-  overflow: hidden;
-  text-overflow: ellipsis;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 </style>
