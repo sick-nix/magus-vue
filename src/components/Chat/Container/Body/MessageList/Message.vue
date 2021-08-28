@@ -17,6 +17,7 @@
           :html="false"
           :source="message.content || ''"
       />
+      <attachments-list :attachments="message.attachments"></attachments-list>
     </div>
     <div v-if="isCreatedByUser" class="message__shortcuts">
       <custom-btn-group
@@ -36,10 +37,11 @@ import CustomBtnGroup from "components/custom/BtnGroup"
 import {MESSAGE_REPLY_MODES} from "constants/chat"
 import {EVENTS} from "constants/events"
 import Magus from "src/Magus"
+import AttachmentsList from "components/Chat/Container/Body/MessageList/Message/Attachments"
 
 export default {
   name: "Message",
-  components: {CustomBtnGroup, CustomAvatar, VueMarkdownPlus},
+  components: {AttachmentsList, CustomBtnGroup, CustomAvatar, VueMarkdownPlus},
   mixins: [utilMixin],
   props: {
     message: {
@@ -61,7 +63,7 @@ export default {
       return this.message.createdBy === this.user._id
     },
     buttonGroup() {
-      return [
+      const group = [
         {
           title: 'Edit',
           click: () => {
@@ -80,6 +82,20 @@ export default {
           icon: 'las la-trash-alt'
         }
       ]
+
+
+      if(this.message.attachments.length)
+        group.unshift({
+          title: 'Download',
+          click: () => {
+            Magus.getGlobalEventBus().emit(EVENTS.ATTACHMENT_DOWNLOAD, {
+              message: this.message
+            })
+          },
+          icon: 'las la-download'
+        })
+
+      return group
     }
   }
 }

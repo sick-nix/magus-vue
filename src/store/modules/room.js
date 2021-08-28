@@ -20,6 +20,15 @@ const getters = {
     isUserOwnerOfRoom: state => (room, user) => {
         if(user instanceof Object) user = user._id
         return room.ownerUser === user
+    },
+    otherUser: (state, getters, rootState, rootGetters) => room => {
+        if(!getters.isDirect(room)) return null
+        return room.users.find(user => user._id !== rootGetters.user._id)
+    },
+    getOtherUserAvatar: (state, getters) => room => {
+        const otherUser = getters.otherUser(room)
+        if(otherUser) return otherUser.avatar
+        return null
     }
 }
 
@@ -39,8 +48,8 @@ const actions = {
         store.commit('setCurrentRoom', room)
     },
     removeRoom(store, room) {
-        const reactiveRoom = store.getters.getRoomById(room._id)
-        removeAndResetIndexes(store.state.rooms, reactiveRoom)
+        const index = store.getters.getRoomIndexById(room._id)
+        removeAndResetIndexes(store.state.rooms, index)
     }
 }
 

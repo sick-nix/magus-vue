@@ -70,6 +70,13 @@ const actions = {
         if(before)
             store.commit('setLastFetchedMessageByRoom', {room, messageId: before})
     },
+    refetchMessage(store, msg) {
+        const message = new Message({
+            type: MESSAGE_DISPATCHERS.MESSAGE_REFETCH,
+            data: {message: msg}
+        })
+        store.dispatch('sendMessage', message)
+    },
     setLastMessageCount(store, data) {
         store.commit('setLastMessageCount', data)
     },

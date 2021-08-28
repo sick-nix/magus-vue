@@ -1,6 +1,6 @@
 <template>
   <div class="chat-body__header">
-    <custom-avatar :name="currentRoom.name"></custom-avatar>
+    <custom-avatar :name="currentRoom.name" :avatar-uri="getOtherUserAvatar"></custom-avatar>
     <div class="room__name">{{ currentRoom.name }}</div>
     <custom-dropdown
         :options="getDropdownOptions"
@@ -27,7 +27,8 @@ export default {
       isDirect: 'isDirect',
       isChannel: 'isChannel',
       isUserOwnerOfRoom: 'isUserOwnerOfRoom',
-      user: 'user'
+      user: 'user',
+      otherUserAvatarGetter: 'getOtherUserAvatar'
     }),
     getDropdownOptions() {
       const options = []
@@ -51,6 +52,9 @@ export default {
       }
 
       return options
+    },
+    getOtherUserAvatar() {
+      return this.otherUserAvatarGetter(this.currentRoom)
     }
   }
 }

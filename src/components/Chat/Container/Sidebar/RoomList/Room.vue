@@ -28,7 +28,11 @@ export default {
   computed: {
     ...mapGetters({
       lastMessageCountByRoom: 'lastMessageCountByRoom',
-      user: 'user'
+      user: 'user',
+      isDirectGetter: 'isDirect',
+      isChannelGetter: 'isChannel',
+      otherUserGetter: 'otherUser',
+      otherUserAvatarGetter: 'getOtherUserAvatar'
     }),
     /**
      * Note: "overwrites" in this component the isCurrentRoom getter from store
@@ -41,18 +45,16 @@ export default {
       return Number(this.room.messageCount) - Number(this.lastMessageCountByRoom(this.room))
     },
     isChannel() {
-      return this.room.type === ROOM_TYPES.CHANNEL
+      return this.isChannelGetter(this.room)
     },
     isDirect() {
-      return this.room.type === ROOM_TYPES.DIRECT
+      return this.isDirectGetter(this.room)
     },
     otherUser() {
-      if(!this.isDirect) return null
-      return this.room.users.find(user => user._id !== this.user._id)
+      return this.otherUserGetter(this.room)
     },
     getOtherUserAvatar() {
-      if(this.otherUser) return this.otherUser.avatar
-      return null
+      return this.otherUserAvatarGetter(this.room)
     }
   },
   methods: {

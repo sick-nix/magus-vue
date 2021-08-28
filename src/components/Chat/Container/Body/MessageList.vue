@@ -1,5 +1,8 @@
 <template>
   <div class="message__list" @scroll="handleScroll">
+    <div v-if="fetchingCurrently" class="spinner__container">
+      <custom-spinner></custom-spinner>
+    </div>
     <message
         v-for="message in messageList"
         :message="message"
@@ -15,13 +18,15 @@ import $ from 'cash-dom'
 import {scrollToBottom} from "util/html"
 import Magus from "src/Magus"
 import {EVENTS} from "constants/events"
+import CustomSpinner from "components/custom/Spinner"
 
 export default {
   name: "MessageList",
-  components: {Message},
+  components: {CustomSpinner, Message},
   computed: {
     ...mapGetters({
-      currentRoom: 'currentRoom'
+      currentRoom: 'currentRoom',
+      fetchingCurrently: 'fetchingCurrently'
     }),
     messageList() {
       if(this.currentRoom)
@@ -37,7 +42,7 @@ export default {
   },
   methods: {
     handleScroll(evt) {
-      if($(evt.target).prop('scrollTop') < 75)
+      if($(evt.target).prop('scrollTop') < 400)
         this.$store.dispatch('getMessages', {
           room: this.currentRoom.getData(),
           before:
@@ -53,6 +58,11 @@ export default {
 </script>
 
 <style scoped>
+.spinner__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .message__list {
   flex-grow: 1;
   overflow-y: auto;

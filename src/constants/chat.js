@@ -7,7 +7,8 @@ export const MESSAGE_HANDLERS = {
     MESSAGE_NEW: 'message.new',
     MESSAGE_GET: 'message.get',
     MESSAGE_EDIT: 'message.edit',
-    MESSAGE_DELETE: 'message.delete'
+    MESSAGE_DELETE: 'message.delete',
+    ATTACHMENT_NEW: 'attachment.new',
 }
 
 export const MESSAGE_DISPATCHERS = {
@@ -19,7 +20,9 @@ export const MESSAGE_DISPATCHERS = {
     MESSAGE_NEW: 'message.new',
     MESSAGE_GET: 'message.get',
     MESSAGE_EDIT: 'message.edit',
-    MESSAGE_DELETE: 'message.delete'
+    MESSAGE_DELETE: 'message.delete',
+    ATTACHMENT_NEW: 'attachment.new',
+    MESSAGE_REFETCH: 'message.refetch'
 }
 
 export const ROOM_TYPES = {

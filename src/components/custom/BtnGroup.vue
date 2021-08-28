@@ -25,5 +25,7 @@ export default {
 </script>
 
 <style scoped>
-
+.btn i {
+  font-weight: 900;
+}
 </style>

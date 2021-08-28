@@ -12,12 +12,28 @@
     </div>
     <div class="box__textarea-container">
       <resizable-textarea
+          ref="textarea"
           :input-value="message"
           v-model="message"
           @keydown="handleKeydown"
       ></resizable-textarea>
     </div>
     <div class="reply__footer">
+      <div class="footer__buttons">
+        <file-upload
+            ref="upload"
+            class="btn"
+            @input-file="inputFile"
+            title="Send Attachment"
+        >
+          <i class="las la-paperclip"></i>
+        </file-upload>
+        <custom-emoji-picker :on-insert="writeToTextarea">
+          <custom-button title="Select an Emoji">
+            <i class="las la-grin-alt"></i>
+          </custom-button>
+        </custom-emoji-picker>
+      </div>
       <button
           class="btn button--send"
           type="button"
@@ -35,15 +51,21 @@ import {isEnter, isEscape, isShift} from "util/event"
 import Magus from "src/Magus"
 import {EVENTS} from "constants/events"
 import {MESSAGE_REPLY_MODES} from "constants/chat"
+import FileUpload from 'vue-upload-component'
+import CustomButton from "components/custom/Button"
+import uuid from "uuid"
+import CustomEmojiPicker from "components/custom/EmojiPicker"
+import {insertAtCaretPosition} from "util/html"
 
 export default {
   name: "ReplyBox",
-  components: {ResizableTextarea},
+  components: {CustomEmojiPicker, CustomButton, ResizableTextarea, FileUpload},
   mixins: [replyBoxMixin],
   data() {
     return {
       message: null,
       editingMessage: null,
+      files: [],
     }
   },
   mounted() {
@@ -58,6 +80,9 @@ export default {
     })
   },
   methods: {
+    writeToTextarea(value) {
+      this.message = insertAtCaretPosition(this.$refs.textarea.$el, value)
+    },
     handleKeydown(evt) {
       if(isEnter(evt) && !isShift(evt)) {
         evt.preventDefault()
@@ -66,14 +91,15 @@ export default {
         this.disableEditMode()
       }
     },
-    async sendMessage() {
+    async sendMessage(attachment = undefined) {
       switch (true) {
         case this.isReply:
         case this.isPrivateNote:
             await this.$store.dispatch('newMessage', {
               content: this.message,
               room: this.currentRoom._id,
-              private: this.isPrivateNote
+              private: this.isPrivateNote,
+              attachment
             })
             this.message = ''
             break
@@ -96,6 +122,18 @@ export default {
     disableEditMode() {
       this.editingMessage = null
       this.$store.dispatch('setSelectedMode', MESSAGE_REPLY_MODES.REPLY)
+    },
+    async inputFile(newFile) {
+      if(newFile) {
+        this.disableEditMode()
+        const uniq = `${uuid()}-${Date.now()}`
+        await this.$store.dispatch('addAttachmentInProgress', {
+          file: newFile.file,
+          uniq
+        })
+
+        await this.sendMessage({uniq})
+      }
     }
   }
 }
@@ -116,13 +154,18 @@ export default {
   padding: 5px 10px;
   background-color: var(--color-bg-tertiary);
   --selected-reply-mode-color: var(--reply-color);
-  color: var(--selected-reply-mode-color)
+  color: var(--selected-reply-mode-color);
+  user-select: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
 }
-.reply__mode.active {
-  border-bottom: 2px solid var(--selected-reply-mode-color);
-  border-right: 1px solid var(--color-border-primary);
-  border-left: 1px solid var(--color-border-primary);
+.reply__mode.active,
+.reply__mode:hover:not(.disabled) {
+  border-bottom-color: var(--selected-reply-mode-color);
   background-color: var(--color-bg-overlay);
+}
+.reply__mode:hover {
+
 }
 .reply__mode--reply {
   --selected-reply-mode-color: var(--reply-color);
@@ -143,5 +186,18 @@ export default {
 }
 .button--send {
   margin-left: auto;
+}
+.footer__buttons {
+  display: flex;
+  position: relative;
+}
+.footer__buttons * {
+  font-weight: 900;
+}
+.footer__buttons :hover {
+  cursor: pointer;
+}
+.footer__buttons *:not(:first-child) {
+  margin-left: 10px;
 }
 </style>
