@@ -1,5 +1,7 @@
 const path = require("path")
 const { VueLoaderPlugin } = require("vue-loader")
+const TerserPlugin = require('terser-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 function getPath(dir) {
     return path.join(__dirname, "./" + dir)
@@ -38,6 +40,23 @@ module.exports = {
             }
         ]
     },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    format: {
+                        comments: false,
+                    },
+                    compress: {
+                        pure_funcs: ['console.error']
+                    },
+                    mangle: true
+                },
+                extractComments: false
+            })
+        ]
+    },
     devServer: {
         contentBase: getPath("public"),
         port: 3000,
@@ -63,6 +82,7 @@ module.exports = {
     },
     plugins: [
         // make sure to include the plugin for the magic
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        //new BundleAnalyzerPlugin()
     ]
 }

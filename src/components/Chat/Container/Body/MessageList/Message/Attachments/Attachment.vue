@@ -5,12 +5,13 @@
       <div v-if="isImage" class="attachment__image">
         <img :src="attachmentUrl" alt="image attachment"/>
       </div>
-      <div class="non-image-attachment" v-else>
+      <div class="non-image-attachment" v-else-if="this.attachment.fileType">
         <a href="#" target="_blank" @click.prevent="download">
           <i class="las la-paperclip"></i>
           <span>{{ attachment.origFilename }}</span>
         </a>
       </div>
+      <div v-else class="attachment--missing">No attachment found</div>
     </div>
   </div>
 </template>
@@ -22,6 +23,8 @@ import v from 'voca'
 import Magus from "src/Magus"
 import {download} from "util/html"
 import { EVENTS } from "constants/events"
+import {mapGetters} from "vuex"
+import { differenceInSeconds } from 'date-fns'
 
 export default {
   name: "Attachment",
@@ -39,15 +42,24 @@ export default {
     Magus.getGlobalEventBus().off(EVENTS.ATTACHMENT_DOWNLOAD, this.downloadHandler)
   },
   computed: {
+    ...mapGetters({
+      isCreatedByUser: 'isCreatedByUser',
+      getInProgressFile: 'getInProgressFile'
+    }),
     isImage() {
       return v.indexOf(this.attachment.fileType, 'image') >= 0
     },
     isInProgress() {
-      return !this.attachment.filePath
+      if(this.attachment.filePath) return false
+      return this.getInProgressFile(this.attachment.tempId)
+        || this.isInProgressByOtherUser
     },
     attachmentUrl() {
       return Magus.instance.getUrl('attachment' + this.attachment.filePath.replace('/media',''))
     },
+    isInProgressByOtherUser() {
+      return !this.isCreatedByUser(this.attachment) && differenceInSeconds(new Date(this.attachment.createdAt), new Date()) > -120
+    }
   },
   methods: {
     async download() {
@@ -76,5 +88,8 @@ export default {
   max-height: 100%;
   width: auto;
   height: auto;
+}
+.attachment--missing {
+  font-style: italic;
 }
 </style>

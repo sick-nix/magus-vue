@@ -1,5 +1,6 @@
 <template>
   <div class="chat-body__header">
+    <custom-hamburger-button></custom-hamburger-button>
     <custom-avatar :name="currentRoom.name" :avatar-uri="getOtherUserAvatar"></custom-avatar>
     <div class="room__name">{{ currentRoom.name }}</div>
     <div class="header__container--end">
@@ -22,10 +23,11 @@ import {DROPDOWN_POSITIONS} from "constants/components"
 import CustomButton from "components/custom/Button"
 import Magus from "src/Magus"
 import { EVENTS } from "constants/events"
+import CustomHamburgerButton from "components/custom/HamburgerButton"
 
 export default {
   name: "ChatBodyHeader",
-  components: {CustomButton, CustomDropdown, CustomAvatar},
+  components: {CustomHamburgerButton, CustomButton, CustomDropdown, CustomAvatar},
   created() {
     this.DROPDOWN_POSITION_SOUTH_WEST = DROPDOWN_POSITIONS.SOUTH_WEST
   },

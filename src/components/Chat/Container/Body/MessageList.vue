@@ -102,5 +102,7 @@ export default {
 }
 .list__sidebar {
   background-color: var(--color-bg-overlay);
+  border-left: 1px solid var(--color-border-primary);
+  overflow-y: auto;
 }
 </style>

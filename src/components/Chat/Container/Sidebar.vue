@@ -32,4 +32,9 @@ export default {
     width: 100%;
   }
 }
+@media screen and (min-width: 768px){
+  .chat__sidebar {
+    display: flex !important;
+  }
+}
 </style>

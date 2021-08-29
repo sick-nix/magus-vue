@@ -5,7 +5,10 @@ const state = () => ({
 })
 
 const getters = {
-    getInProgressFile: state => uniq => state.inProgress[uniq]
+    getInProgressFile: state => uniq => state.inProgress[uniq],
+    isCreatedByUser: (state, getters, rootState, rootGetters) => attachment => {
+        return attachment.createdBy === rootGetters.user._id
+    },
 }
 
 const actions = {
