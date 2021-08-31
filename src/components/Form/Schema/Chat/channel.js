@@ -36,7 +36,8 @@ export const getChannelConfig = (params) => {
                     type: "button",
                     'input-class': "btn btn-primary",
                     label: "Create Channel",
-                    '@click': params.create
+                    '@click': params.create,
+                    disabled: params.hasErrors
                 }
             ]
         },

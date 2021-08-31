@@ -6,6 +6,7 @@ export default function (params = {}) {
     schema.type.value = ROOM_TYPES.DIRECT
     schema.users.multiple = false
     schema.users.label = "Choose a user"
+    schema.users.validation = "required"
     schema.group.children[1].label = "Create Direct"
     delete schema.name
 

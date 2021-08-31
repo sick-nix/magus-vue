@@ -9,6 +9,7 @@
         <formulate-form
           :schema="getRoomSchema"
           v-model="formValues"
+          ref="form"
         >
         </formulate-form>
       </form-wrapper>
@@ -49,7 +50,8 @@ export default {
           this.$modal.hide('createRoom')
           this.selectedType = null
         },
-        selectOpen: this.getUsers
+        selectOpen: this.getUsers,
+        hasErrors: this.$refs.form ? this.$refs.form.hasErrors : true
       }
       switch (this.selectedType) {
         case ROOM_TYPES.CHANNEL:
