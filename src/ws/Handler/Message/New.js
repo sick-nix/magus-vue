@@ -15,9 +15,9 @@ class MessageNew extends HandlerAbstract {
                 if(!attachment.filePath)
                     await this.$store.dispatch('uploadFileByUniqId', attachment.tempId)
             }
-        }
 
-        this.$store.dispatch('refetchMessage', message)
+            this.$store.dispatch('refetchMessage', message)
+        }
     }
 }
 
