@@ -1,0 +1,85 @@
+@import "~line-awesome/dist/line-awesome/css/line-awesome.min.css";
+@import "~notyf/notyf.min.css";
+@import "~vue-select/dist/vue-select.css";
+@import "~@primer/css/dist/primer.css";
+
+@font-face {
+    font-family: "magus";
+    src: url("../fonts/Basic-Regular.ttf");
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: 'magus', Arial, sans-serif;
+
+    --reply-color: #0d6efd;
+    --private-color: #6c757d;
+    --edit-color: #ffc107;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+a {
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--color-text-link);
+    background-color: transparent;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:active, a:hover {
+    outline-width: 0;
+}
+
+img {
+    max-width: 100%;
+}
+label {
+    display: block;
+    font-weight: 400;
+    margin-bottom: 7px;
+    text-align: left;
+}
+
+input.border-danger {
+    border-color: var(--color-btn-danger-text) !important;
+    box-shadow: var(--color-btn-danger-focus-shadow) !important;
+}
+
+input.border-success {
+    border-color: var(--color-btn-primary-bg) !important;
+    box-shadow: var(--color-btn-primary-focus-shadow) !important;
+}
+
+.formulate-input-errors {
+    margin-bottom: 8px;
+    list-style: none;
+    color: var(--color-btn-danger-text);
+}
+
+.formulate-input-element[data-type="vue-select"] {
+    background-color: var(--color-input-bg);
+}
+.formulate-input-element[data-type="vue-select"] > div {
+    border: 1px solid var(--color-input-border);
+}
+
+.formulate-form .btn {
+    margin-top: 12px;
+}
+.formulate-form .input-block {
+    margin-bottom: 8px;
+}
+
+.formulate-input[data-classification="group"].form-actions .btn {
+    margin-left: 8px;
+}
